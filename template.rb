@@ -129,7 +129,6 @@ def add_devise
   generate('devise:install')
   generate('devise', 'User')
   run "rails g migration AddFirstNameLastNamePseudoSlugToUsers first_name last_name pseudo slug:uniq"
-  generate('friendly_id')
 
   run 'rm app/controllers/application_controller.rb'
   file 'app/controllers/application_controller.rb', <<~RUBY
@@ -152,6 +151,27 @@ def add_devise
       end
     end
   RUBY
+end
+
+def add_friendly_id
+  generate('friendly_id')
+  inject_into_file 'app/models/user', after: 'class User < ApplicationRecord' do
+    <<~RUBY
+      extend FriendlyId
+      friendly_id :pseudo, use: :slugged
+    RUBY
+  end
+end
+
+def add_i18n_params
+  inject_into_file 'config/application.rb', after: 'config.load_defaults 6.0' do
+    <<~RUBY
+      'config.i18n.enforce_available_locales = true'
+      'config.i18n.available_locales = %i[fr]'
+      'config.i18n.default_locale = :fr'
+      'config.time_zone = 'Paris'
+    RUBY
+  end
 end
 
 def add_git_ignore
@@ -189,6 +209,8 @@ after_bundle do
   set_routes
   add_assets
   add_devise
+  add_friendly_id
+  add_i18n_params
   add_git_ignore
 
   # Environments
@@ -217,22 +239,6 @@ after_bundle do
       // initSelect2();
     });
   JS
-
-  inject_into_file 'app/models/user', after: 'class User < ApplicationRecord' do
-    <<~RUBY
-      extend FriendlyId
-      friendly_id :pseudo, use: :slugged
-    RUBY
-  end
-
-  inject_into_file 'config/application.rb', after: "config.load_defaults 6.0" do
-    <<~RUBY
-      config.i18n.enforce_available_locales = true
-      config.i18n.available_locales = %i[fr]
-      config.i18n.default_locale = :fr
-      config.time_zone = 'Paris'
-    RUBY
-  end
 
   inject_into_file 'config/webpack/environment.js', before: 'module.exports' do
     <<~JS
