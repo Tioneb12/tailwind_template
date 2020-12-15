@@ -77,7 +77,6 @@ end
 def add_i18n_params
   inject_into_file 'config/application.rb', after: "config.load_defaults 6.0" do
     <<~RUBY
-      \n
       config.i18n.enforce_available_locales = true
       config.i18n.available_locales = %i[fr]
       config.i18n.default_locale = :fr
@@ -140,7 +139,8 @@ end
 def add_devise
   generate('devise:install')
   generate('devise', 'User')
-  run "rails g migration AddFirstNameLastNamePseudoToUsers first_name last_name pseudo"
+  run "rails g migration AddFirstNameLastNamePseudoSlugToUsers first_name last_name pseudo slug:uniq"
+  generate('friendly_id')
 
   run 'rm app/controllers/application_controller.rb'
   file 'app/controllers/application_controller.rb', <<~RUBY
@@ -229,6 +229,13 @@ after_bundle do
       // initSelect2();
     });
   JS
+
+  inject_into_file 'app/models/user', after: 'class User < ApplicationRecord' do
+    <<~RUBY
+      extend FriendlyId
+      friendly_id :pseudo, use: :slugged
+    RUBY
+  end
 
   inject_into_file 'config/webpack/environment.js', before: 'module.exports' do
     <<~JS
