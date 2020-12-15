@@ -74,17 +74,6 @@ def add_assets
   gsub_file('config/environments/development.rb', /config\.assets\.debug.*/, 'config.assets.debug = false')
 end
 
-def add_i18n_params
-  inject_into_file 'config/application.rb', after: "config.load_defaults 6.0" do
-    <<~RUBY
-      config.i18n.enforce_available_locales = true
-      config.i18n.available_locales = %i[fr]
-      config.i18n.default_locale = :fr
-      config.time_zone = 'Paris'
-    RUBY
-  end
-end
-
 # Layout
 gsub_file('app/views/layouts/application.html.erb', "<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>", "<%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload', defer: true %>")
 style = <<~HTML
@@ -199,7 +188,6 @@ after_bundle do
 
   set_routes
   add_assets
-  add_i18n_params
   add_devise
   add_git_ignore
 
@@ -234,6 +222,15 @@ after_bundle do
     <<~RUBY
       extend FriendlyId
       friendly_id :pseudo, use: :slugged
+    RUBY
+  end
+
+  inject_into_file 'config/application.rb', after: "config.load_defaults 6.0" do
+    <<~RUBY
+      config.i18n.enforce_available_locales = true
+      config.i18n.available_locales = %i[fr]
+      config.i18n.default_locale = :fr
+      config.time_zone = 'Paris'
     RUBY
   end
 
