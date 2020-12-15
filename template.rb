@@ -5,9 +5,13 @@ say "starting template creation: Rails 6, Tailwind 2, Devise", :green
 
 inject_into_file 'Gemfile', before: 'group :development, :test do' do
   <<~RUBY
-    gem 'devise'
     gem 'autoprefixer-rails'
+    gem 'devise'
+    gem 'devise-i18n'
     gem 'font-awesome-sass'
+    gem 'friendly_id', '~> 5.4.0'
+    gem 'rails-i18n', '~> 6.0.0'
+    gem 'route_translator'
   RUBY
 end
 
@@ -68,6 +72,17 @@ def add_assets
   run 'unzip assets.zip -d app && rm assets.zip && mv app/tailwind_assets-master app/assets'
 
   gsub_file('config/environments/development.rb', /config\.assets\.debug.*/, 'config.assets.debug = false')
+end
+
+def add_i18n_params
+  inject_into_file 'config/application.rb', after: "config.load_defaults 6.0" do
+    <<~RUBY
+      \nconfig.i18n.enforce_available_locales = true
+      \nconfig.i18n.available_locales = %i[fr]
+      \nconfig.i18n.default_locale = :fr
+      \nconfig.time_zone = 'Paris'
+    RUBY
+  end
 end
 
 # Layout
@@ -183,6 +198,7 @@ after_bundle do
 
   set_routes
   add_assets
+  add_i18n_params
   add_devise
   add_git_ignore
 
