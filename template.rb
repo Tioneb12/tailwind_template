@@ -204,7 +204,7 @@ environment generators
 ########################################
 after_bundle do
   rails_command 'db:drop db:create db:migrate'
-  generate(:controller, 'pages', 'home', '--skip-routes', '--no-test-framework')
+  generate(:controller, 'pages', 'home', '--skip-routes')
 
   set_routes
   add_assets
