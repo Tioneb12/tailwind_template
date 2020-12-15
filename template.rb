@@ -47,7 +47,7 @@ def add_tailwind
     end
 
   run 'curl -L https://github.com/Tioneb12/tailwind_components/archive/master.zip > components.zip'
-  run 'unzip components.zip -d app && rm components.zip && mv app/tailwind-components-master app/javascript/components'
+  run 'unzip components.zip -d app && rm components.zip && mv app/tailwind_components-master app/javascript/components'
 
   run "npx tailwindcss init --full"
   gsub_file "tailwind.config.js", /plugins:\s\[],/, "plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography'), require('@tailwindcss/aspect-ratio'),],"
@@ -65,7 +65,7 @@ def add_assets
   run 'rm -rf vendor'
   run 'rm -rf app/assets'
   run 'curl -L https://github.com/Tioneb12/tailwind_assets/archive/master.zip > assets.zip'
-  run 'unzip assets.zip -d app && rm assets.zip && mv app/assets-master app/assets'
+  run 'unzip assets.zip -d app && rm assets.zip && mv app/tailwind_assets-master app/assets'
 
   gsub_file('config/environments/development.rb', /config\.assets\.debug.*/, 'config.assets.debug = false')
 end
@@ -136,7 +136,7 @@ def add_devise
   rails_command 'db:migrate'
   run 'curl -L https://github.com/Tioneb12/tailwind_devise/archive/master.zip > devise.zip'
   # run 'curl -L https://github.com/thomasvanholder/devise/archive/master.zip > devise.zip'
-  run 'unzip devise.zip -d app && rm devise.zip && mv app/devise-master app/views/devise'
+  run 'unzip devise.zip -d app && rm devise.zip && mv app/tailwind_devise-master app/views/devise'
 
   run 'rm app/controllers/pages_controller.rb'
   file 'app/controllers/pages_controller.rb', <<~RUBY
