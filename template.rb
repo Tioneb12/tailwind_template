@@ -128,7 +128,7 @@ end
 def add_devise
   generate('devise:install')
   generate('devise', 'User')
-  run "rails g migration AddFirstNameLastNamePseudoSlugToUsers first_name last_name pseudo slug:uniq"
+  run "rails g migration AddFirstNameLastNamePseudoSlugToUsers first_name last_name pseudo"
 
   run 'rm app/controllers/application_controller.rb'
   file 'app/controllers/application_controller.rb', <<~RUBY
@@ -155,7 +155,8 @@ end
 
 def add_friendly_id
   generate('friendly_id')
-  inject_into_file 'app/models/user', after: 'class User < ApplicationRecord' do
+  run "rails g migration AddSlugToUsers slug:uniq"
+  inject_into_file 'app/models/user.rb', after: 'class User < ApplicationRecord' do
     <<~RUBY
       extend FriendlyId
       friendly_id :pseudo, use: :slugged
