@@ -158,8 +158,7 @@ def add_friendly_id
   run "rails g migration AddSlugToUsers slug:uniq"
   inject_into_file 'app/models/user.rb', after: 'class User < ApplicationRecord' do
     <<-RUBY
-    \n
-    extend FriendlyId
+    \nextend FriendlyId
     friendly_id :pseudo, use: :slugged
     RUBY
   end
@@ -168,8 +167,7 @@ end
 def add_i18n_params
   inject_into_file 'config/application.rb', after: 'config.load_defaults 6.0' do
     <<-RUBY
-    \n
-    config.i18n.enforce_available_locales = true
+    \nconfig.i18n.enforce_available_locales = true
     config.i18n.available_locales = %i[fr]
     config.i18n.default_locale = :fr
     config.time_zone = 'Paris'
