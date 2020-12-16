@@ -5,7 +5,7 @@ say "starting template creation: Rails 6, Tailwind 2, Devise", :green
 
 inject_into_file 'Gemfile', before: 'group :development, :test do' do
   <<~RUBY
-    \ngem 'autoprefixer-rails'
+    gem 'autoprefixer-rails'
     gem 'devise'
     gem 'devise-i18n'
     gem 'font-awesome-sass'
@@ -16,8 +16,8 @@ inject_into_file 'Gemfile', before: 'group :development, :test do' do
 end
 
 inject_into_file 'Gemfile', after: 'group :development, :test do' do
-  <<~RUBY
-  \ngem 'pry-byebug'
+  <<-RUBY
+  gem 'pry-byebug'
   gem 'pry-rails'
   gem 'dotenv-rails'
   RUBY
@@ -88,10 +88,12 @@ gsub_file('app/views/layouts/application.html.erb', "<%= stylesheet_link_tag 'ap
 def add_navbar
   run "mkdir -p app/views/shared"
   run 'curl -L https://raw.githubusercontent.com/Tioneb12/tailwind_template/master/templates/_navbar.html.erb > app/views/shared/_navbar.html.erb'
+  # run 'curl -L https://raw.githubusercontent.com/thomasvanholder/jumpstart/main/templates/_navbar.html.erb > app/views/shared/_navbar.html.erb'
 end
 
 def add_flashes
   run 'curl -L https://raw.githubusercontent.com/Tioneb12/tailwind_template/master/templates/_flashes.html.erb > app/views/shared/_flashes.html.erb'
+  # run 'curl -L https://raw.githubusercontent.com/thomasvanholder/jumpstart/main/templates/_flashes.html.erb > app/views/shared/_flashes.html.erb'
 end
 
 inject_into_file 'app/views/layouts/application.html.erb', after: '<body>' do
@@ -137,6 +139,7 @@ def add_devise
 
   rails_command 'db:migrate'
   run 'curl -L https://github.com/Tioneb12/tailwind_devise/archive/master.zip > devise.zip'
+  # run 'curl -L https://github.com/thomasvanholder/devise/archive/master.zip > devise.zip'
   run 'unzip devise.zip -d app && rm devise.zip && mv app/tailwind_devise-master app/views/devise'
 
   run 'rm app/controllers/pages_controller.rb'
@@ -154,7 +157,7 @@ def add_friendly_id
   generate('friendly_id')
   run "rails g migration AddSlugToUsers slug:uniq"
   inject_into_file 'app/models/user.rb', after: 'class User < ApplicationRecord' do
-    <<-RUBY.strip_heredoc
+    <<~RUBY
       \nextend FriendlyId
       friendly_id :pseudo, use: :slugged
     RUBY
@@ -163,7 +166,7 @@ end
 
 def add_i18n_params
   inject_into_file 'config/application.rb', after: 'config.load_defaults 6.0' do
-    <<-RUBY.strip_heredoc
+    <<~RUBY
       \nconfig.i18n.enforce_available_locales = true
       config.i18n.available_locales = %i[fr]
       config.i18n.default_locale = :fr
