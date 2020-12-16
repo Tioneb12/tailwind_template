@@ -5,7 +5,7 @@ say "starting template creation: Rails 6, Tailwind 2, Devise", :green
 
 inject_into_file 'Gemfile', before: 'group :development, :test do' do
   <<~RUBY
-    gem 'autoprefixer-rails'
+    \ngem 'autoprefixer-rails'
     gem 'devise'
     gem 'devise-i18n'
     gem 'font-awesome-sass'
@@ -17,7 +17,7 @@ end
 
 inject_into_file 'Gemfile', after: 'group :development, :test do' do
   <<~RUBY
-  gem 'pry-byebug'
+  \ngem 'pry-byebug'
   gem 'pry-rails'
   gem 'dotenv-rails'
   RUBY
@@ -88,12 +88,10 @@ gsub_file('app/views/layouts/application.html.erb', "<%= stylesheet_link_tag 'ap
 def add_navbar
   run "mkdir -p app/views/shared"
   run 'curl -L https://raw.githubusercontent.com/Tioneb12/tailwind_template/master/templates/_navbar.html.erb > app/views/shared/_navbar.html.erb'
-  # run 'curl -L https://raw.githubusercontent.com/thomasvanholder/jumpstart/main/templates/_navbar.html.erb > app/views/shared/_navbar.html.erb'
 end
 
 def add_flashes
   run 'curl -L https://raw.githubusercontent.com/Tioneb12/tailwind_template/master/templates/_flashes.html.erb > app/views/shared/_flashes.html.erb'
-  # run 'curl -L https://raw.githubusercontent.com/thomasvanholder/jumpstart/main/templates/_flashes.html.erb > app/views/shared/_flashes.html.erb'
 end
 
 inject_into_file 'app/views/layouts/application.html.erb', after: '<body>' do
@@ -139,7 +137,6 @@ def add_devise
 
   rails_command 'db:migrate'
   run 'curl -L https://github.com/Tioneb12/tailwind_devise/archive/master.zip > devise.zip'
-  # run 'curl -L https://github.com/thomasvanholder/devise/archive/master.zip > devise.zip'
   run 'unzip devise.zip -d app && rm devise.zip && mv app/tailwind_devise-master app/views/devise'
 
   run 'rm app/controllers/pages_controller.rb'
