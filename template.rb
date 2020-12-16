@@ -157,7 +157,7 @@ def add_friendly_id
   generate('friendly_id')
   run "rails g migration AddSlugToUsers slug:uniq"
   inject_into_file 'app/models/user.rb', after: 'class User < ApplicationRecord' do
-    <<-RUBY
+    <<-RUBY.strip_heredoc
       \nextend FriendlyId
       friendly_id :pseudo, use: :slugged
     RUBY
