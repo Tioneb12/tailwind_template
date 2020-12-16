@@ -16,7 +16,7 @@ inject_into_file 'Gemfile', before: 'group :development, :test do' do
 end
 
 inject_into_file 'Gemfile', after: 'group :development, :test do' do
-  <<-RUBY
+  <<-RUBY.strip_heredoc
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'dotenv-rails'
@@ -157,7 +157,7 @@ def add_friendly_id
   generate('friendly_id')
   run "rails g migration AddSlugToUsers slug:uniq"
   inject_into_file 'app/models/user.rb', after: 'class User < ApplicationRecord' do
-    <<-RUBY
+    <<-RUBY.strip_heredoc
       \nextend FriendlyId
       friendly_id :pseudo, use: :slugged
     RUBY
@@ -166,7 +166,7 @@ end
 
 def add_i18n_params
   inject_into_file 'config/application.rb', after: 'config.load_defaults 6.0' do
-    <<-RUBY
+    <<-RUBY.strip_heredoc
       \nconfig.i18n.enforce_available_locales = true
       config.i18n.available_locales = %i[fr]
       config.i18n.default_locale = :fr
