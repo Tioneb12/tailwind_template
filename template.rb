@@ -16,7 +16,7 @@ inject_into_file 'Gemfile', before: 'group :development, :test do' do
 end
 
 inject_into_file 'Gemfile', after: 'group :development, :test do' do
-  <<~RUBY.strip_heredoc
+  <<~RUBY
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'dotenv-rails'
