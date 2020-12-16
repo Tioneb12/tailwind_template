@@ -166,11 +166,11 @@ end
 
 def add_i18n_params
   inject_into_file 'config/application.rb', after: 'config.load_defaults 6.0' do
-    <<-RUBY.strip_heredoc
-      \nconfig.i18n.enforce_available_locales = true
-      config.i18n.available_locales = %i[fr]
-      config.i18n.default_locale = :fr
-      config.time_zone = 'Paris'
+    <<-RUBY \n
+    config.i18n.enforce_available_locales = true
+    config.i18n.available_locales = %i[fr]
+    config.i18n.default_locale = :fr
+    config.time_zone = 'Paris'
     RUBY
   end
 end
