@@ -3,6 +3,7 @@ Inspired by the [Le Wagon Rails templates](https://github.com/lewagon/rails-temp
 ## Create a new repo
 
 ### Rails 6 | Tailwind 2.0 🏳️‍🌈 | Devise 🔐
+- Rails app inspired by [thomasvanholder/jumpstart](https://github.com/thomasvanholder/jumpstart)
 - styled navbar
 - styled devise/views from [Tailwind devise](https://github.com/Tioneb12/tailwind_devise)
 - javascript/components from [Tailwind components](https://github.com/Tioneb12/tailwind_components)
